@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f0444e" />
+  <meta name="description" content="A student planner for managing assignments, events, reminders, and deadlines." />
+  <title>Planner | MATADOR</title>
+  <link rel="stylesheet" href="global.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Shared icons: no external image files or icon packages required. -->
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="m4 20 4.3-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20ZM14.5 6.5l3 3"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21V5.5ZM4 18.5A2.5 2.5 0 0 1 6.5 16H20"/></symbol>
+  </svg>
+
+  <main class="app-shell">
+    <section class="hero" aria-label="Planner header">
+      <div class="topbar">
+        <a class="brand" href="index.html" aria-label="CampusFlow Planner home">
+          <span class="brand-mark"><svg class="icon"><use href="#i-book"/></svg></span>
+          <span>campus<span class="brand-light">flow</span><span class="brand-dot">.</span></span>
+        </a>
+        <!-- TEAM NAVIGATION: change each href to your teammate's actual file path. -->
+        <nav class="top-navigation" aria-label="Main navigation">
+          <a href="home.html">Home</a>
+          <a href="reminders.html">Reminders</a>
+          <a href="index.html" class="active" aria-current="page">Planner</a>
+          <a href="events.html">Events</a>
+          <a href="contact.html">Contact us</a>
+        </nav>
+        <span class="topbar-tag">Student workspace</span>
+      </div>
+
+      <div class="hero-content">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL PLANNER</div>
+          <h1>Today's plan<span class="hero-spark">✦</span></h1>
+          <p class="hero-subtitle">Stay on top of deadlines. Make room for everything else.</p>
+        </div>
+        <div class="hero-actions">
+          <button type="button" id="todayButton" class="date-chip" title="Show tasks due today"><svg class="icon"><use href="#i-calendar"/></svg><span id="todayText">Today</span></button>
+          <button type="button" class="btn btn-white" id="openAddTask"><svg class="icon"><use href="#i-plus"/></svg> New task</button>
+        </div>
+      </div>
+      <div class="hero-decoration hero-decoration-one"></div>
+      <div class="hero-decoration hero-decoration-two"></div>
+    </section>
+
+    <section class="summary-row" aria-label="Task overview">
+      <div class="summary-card">
+        <div class="summary-top"><span class="summary-icon summary-icon-blue"><svg class="icon"><use href="#i-book"/></svg></span><span class="summary-label">Open tasks</span></div>
+        <div class="summary-main" id="openCount">0 <span>tasks</span></div>
+        <p class="summary-caption" id="openCaption">Your to-do list is ready.</p>
+      </div>
+      <div class="summary-card">
+        <div class="summary-top"><span class="summary-icon summary-icon-red">!</span><span class="summary-label">High priority</span></div>
+        <div class="summary-main" id="priorityCount">0 <span>tasks</span></div>
+        <p class="summary-caption" id="priorityCaption">Nothing urgent right now.</p>
+      </div>
+      <div class="summary-card">
+        <div class="summary-top"><span class="summary-icon summary-icon-orange"><svg class="icon"><use href="#i-clock"/></svg></span><span class="summary-label">Next deadline</span></div>
+        <div class="summary-main" id="nextDeadline">All clear</div>
+        <p class="summary-caption" id="deadlineCaption">No upcoming deadlines.</p>
+      </div>
+    </section>
+
+    <div class="planner-content">
+      <section class="tasks-column" aria-labelledby="tasksHeading">
+        <div class="section-heading-row">
+          <div><span class="section-kicker">YOUR WORKSPACE</span><h2 id="tasksHeading">Your tasks <span class="task-count-pill" id="taskCountPill">0</span></h2></div>
+          <button class="btn btn-primary add-inline" type="button" id="addTaskInline"><svg class="icon"><use href="#i-plus"/></svg> Add task</button>
+        </div>
+
+        <div class="task-toolbar">
+          <div class="tab-row" role="group" aria-label="Filter tasks">
+            <button class="tab active" type="button" data-filter="all" aria-pressed="true">All tasks</button>
+            <button class="tab" type="button" data-filter="today" aria-pressed="false">Today</button>
+            <button class="tab" type="button" data-filter="upcoming" aria-pressed="false">Upcoming</button>
+            <button class="tab" type="button" data-filter="completed" aria-pressed="false">Completed</button>
+          </div>
+          <div class="tools-row">
+            <label class="search-box"><svg class="icon"><use href="#i-search"/></svg><span class="sr-only">Search tasks</span><input id="searchInput" type="search" placeholder="Search tasks..." autocomplete="off" /></label>
+            <label class="select-wrap"><span class="sr-only">Sort tasks</span><select id="sortSelect"><option value="due">Due date</option><option value="priority">Priority</option><option value="newest">Newest first</option></select></label>
+          </div>
+        </div>
+
+        <div id="taskList" class="task-list" aria-live="polite"></div>
+        <div id="emptyState" class="empty-state" hidden>
+          <div class="empty-illustration"><svg class="icon"><use href="#i-check"/></svg></div>
+          <h3 id="emptyHeading">Nothing here yet</h3><p id="emptyMessage">Add your first task to get started.</p>
+          <button type="button" class="btn btn-primary" id="emptyAddTask"><svg class="icon"><use href="#i-plus"/></svg> Create task</button>
+        </div>
+        <button type="button" id="clearCompleted" class="clear-completed" hidden>Clear completed tasks</button>
+      </section>
+
+      <aside class="sidebar" aria-label="Planner details">
+        <div class="side-card focus-card">
+          <div class="side-card-heading"><h3>Daily progress</h3><span class="small-emoji">✺</span></div>
+          <div class="focus-main">
+            <div id="progressRing" class="progress-ring" role="img" aria-label="0 percent complete"><span id="progressValue">0%</span></div>
+            <div><strong id="progressHeadline">Keep moving</strong><p id="progressCaption">Check tasks off as you finish them.</p></div>
+          </div>
+          <div class="progress-footer"><span id="progressDone">0 completed</span><span id="progressTotal">0 total</span></div>
+        </div>
+
+        <div class="side-card">
+          <div class="side-card-heading"><h3>Priority queue</h3><span class="side-caption">Top 3</span></div>
+          <div id="priorityList" class="priority-list"></div>
+        </div>
+
+        <div class="side-card">
+          <div class="side-card-heading"><h3>Due dates</h3><svg class="icon side-heading-icon"><use href="#i-calendar"/></svg></div>
+          <div id="dueList" class="due-list"></div>
+        </div>
+
+        <form class="side-card quick-add" id="quickAddForm">
+          <div class="side-card-heading"><h3>Quick add</h3><span class="small-emoji">✦</span></div>
+          <p>Capture a task before you forget it.</p>
+          <label for="quickTitle" class="sr-only">Quick task name</label>
+          <input id="quickTitle" type="text" maxlength="100" placeholder="e.g. Review calculus notes" required />
+          <button type="submit" class="btn btn-primary btn-full"><svg class="icon"><use href="#i-plus"/></svg> Add task</button>
+        </form>
+      </aside>
+    </div>
+    <footer class="footer"><span>Made for better days, one task at a time.</span><span>CampusFlow · Planner</span></footer>
+  </main>
+
+  <dialog class="task-dialog" id="taskDialog" aria-labelledby="dialogTitle">
+    <form id="taskForm" class="task-form">
+      <div class="dialog-top"><div><span class="section-kicker">GET ORGANIZED</span><h2 id="dialogTitle">Add a task</h2><p>Give your task a little detail so it's easy to follow.</p></div><button type="button" id="closeDialog" class="close-btn" aria-label="Close task form">×</button></div>
+      <label class="field"><span>Task name <span aria-hidden="true">*</span></span><input id="taskTitle" name="title" required maxlength="100" placeholder="What do you need to do?" /></label>
+      <label class="field"><span>Description</span><textarea id="taskDescription" name="description" rows="3" maxlength="600" placeholder="Add any notes or details (optional)"></textarea></label>
+      <div class="form-grid">
+        <label class="field"><span>Category</span><select id="taskCategory" name="category"><option>Homework</option><option>Quiz</option><option>Exam</option><option>Project</option><option>Personal</option><option>Other</option></select></label>
+        <label class="field"><span>Priority</span><select id="taskPriority" name="priority"><option>Low</option><option selected>Medium</option><option>High</option></select></label>
+        <label class="field"><span>Due date <span aria-hidden="true">*</span></span><input type="date" id="taskDue" name="due" required /></label>
+        <label class="field"><span>Reminder time <span class="optional">(optional)</span></span><input type="time" id="taskReminder" name="reminder" /></label>
+      </div>
+      <div class="dialog-actions"><button type="button" id="cancelDialog" class="btn btn-ghost">Cancel</button><button class="btn btn-primary" type="submit" id="saveTaskButton"><svg class="icon"><use href="#i-check"/></svg> Save task</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Everything below powers the planner. No separate JavaScript file needed. -->
+  <script>
+    (() => {
+      'use strict';
+      const STORAGE_KEY = 'campusflow.planner.tasks.v1';
+      const CATEGORIES = ['Homework', 'Quiz', 'Exam', 'Project', 'Personal', 'Other'];
+      const PRIORITIES = ['High', 'Medium', 'Low'];
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+      const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[ch]));
+      const startOfDay = (date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const localISO = (date) => [date.getFullYear(), String(date.getMonth()+1).padStart(2,'0'), String(date.getDate()).padStart(2,'0')].join('-');
+      const dateOffset = (days) => { const date = startOfDay(new Date()); date.setDate(date.getDate()+days); return localISO(date); };
+      const dateFromISO = (iso) => { const [y,m,d] = String(iso).split('-').map(Number); return new Date(y,m-1,d); };
+      const dayDiff = (iso) => Math.round((dateFromISO(iso) - startOfDay(new Date())) / 86400000);
+      const makeId = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      const priorities = {High:0, Medium:1, Low:2};
+      const dateLabel = (iso) => { const days = dayDiff(iso); return days < 0 ? `Overdue by ${Math.abs(days)} ${Math.abs(days) === 1 ? 'day':'days'}` : days === 0 ? 'Due today' : days === 1 ? 'Due tomorrow' : `Due in ${days} days`; };
+      const friendlyDate = (iso) => dateFromISO(iso).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'});
+      const friendlyTime = (time) => time ? new Date(`2000-01-01T${time}:00`).toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit'}) : '';
+      const seedTasks = () => [
+        {id:makeId(), title:'Finish math homework', description:'Complete the remaining 3 problems and review the notes before class tomorrow.', category:'Homework', priority:'High', due:dateOffset(2), reminder:'16:00', completed:false, createdAt:Date.now()-3000},
+        {id:makeId(), title:'Review quiz notes', description:'Go through the study guide, make flashcards, and practice the timed section.', category:'Quiz', priority:'Medium', due:dateOffset(2), reminder:'18:30', completed:false, createdAt:Date.now()-2000},
+        {id:makeId(), title:'Prepare for the test', description:'Make a study plan, gather materials, and confirm the test timing with the group.', category:'Personal', priority:'Low', due:dateOffset(3), reminder:'20:00', completed:false, createdAt:Date.now()-1000}
+      ];
+      const validDate = (iso) => /^\d{4}-\d{2}-\d{2}$/.test(iso) && !Number.isNaN(dateFromISO(iso).valueOf()) && localISO(dateFromISO(iso)) === iso;
+      const normalizeTask = (value) => {
+        if (!value || typeof value !== 'object' || typeof value.title !== 'string' || !validDate(value.due)) return null;
+        return {id:String(value.id || makeId()), title:value.title.slice(0,100), description:String(value.description || '').slice(0,600), category:CATEGORIES.includes(value.category) ? value.category:'Other', priority:PRIORITIES.includes(value.priority) ? value.priority:'Medium', due:value.due, reminder:/^([01]\d|2[0-3]):[0-5]\d$/.test(value.reminder || '') ? value.reminder:'', completed:!!value.completed, createdAt:Number(value.createdAt) || Date.now()};
+      };
+      function loadTasks() {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved !== null) { const data = JSON.parse(saved); if (Array.isArray(data)) return data.map(normalizeTask).filter(Boolean); }
+        } catch (error) { console.warn('Could not restore planner tasks:', error); }
+        const initial = seedTasks();
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(initial)); } catch (_) { /* Storage can be disabled. */ }
+        return initial;
+      }
+      let tasks = loadTasks();
+      let filter = 'all';
+      let search = '';
+      let sort = 'due';
+      let editingId = null;
+      let toastTimer = null;
+      function persist() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); }
+        catch (_) { showToast('Changes are temporary: browser storage is unavailable.'); }
+        render();
+      }
+      function showToast(message) {
+        const toast = $('#toast'); toast.textContent = message; toast.classList.add('visible');
+        clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('visible'), 3000);
+      }
+      function filteredTasks() {
+        const query = search.trim().toLowerCase();
+        return tasks.filter(task => {
+          if (filter === 'completed' && !task.completed) return false;
+          if (filter === 'today' && (task.completed || dayDiff(task.due) !== 0)) return false;
+          if (filter === 'upcoming' && (task.completed || dayDiff(task.due) < 0)) return false;
+          if (query && ![task.title, task.description, task.category].join(' ').toLowerCase().includes(query)) return false;
+          return true;
+        }).sort((a,b) => {
+          if (sort === 'newest') return b.createdAt - a.createdAt;
+          if (sort === 'priority') return priorities[a.priority]-priorities[b.priority] || a.due.localeCompare(b.due);
+          return Number(a.completed)-Number(b.completed) || a.due.localeCompare(b.due) || priorities[a.priority]-priorities[b.priority];
+        });
+      }
+      function taskMarkup(task) {
+        const status = task.completed ? 'completed' : (dayDiff(task.due) < 0 ? 'overdue' : '');
+        const days = dayDiff(task.due);
+        return `<article class="task-card ${status}" data-id="${escapeHTML(task.id)}">
+          <label class="task-check-label"><input type="checkbox" class="task-check" aria-label="Mark ${escapeHTML(task.title)} ${task.completed ? 'incomplete':'complete'}" ${task.completed ? 'checked':''} /><span class="task-check-visual"><svg class="icon"><use href="#i-check"/></svg></span></label>
+          <div class="task-info">
+            <div class="task-meta"><span class="category-pill category-${escapeHTML(task.category.toLowerCase())}">${escapeHTML(task.category)}</span><span class="priority-pill priority-${task.priority.toLowerCase()}"><span class="priority-dot"></span>${escapeHTML(task.priority)} priority</span></div>
+            <h3>${escapeHTML(task.title)}</h3>
+            ${task.description ? `<p class="task-description">${escapeHTML(task.description)}</p>` : ''}
+            <div class="task-bottom"><span class="task-due ${days < 0 && !task.completed ? 'danger' : ''}"><svg class="icon"><use href="#i-calendar"/></svg>${task.completed ? 'Completed' : dateLabel(task.due)} <span class="due-exact">· ${escapeHTML(friendlyDate(task.due))}</span></span>${task.reminder ? `<span class="task-reminder"><svg class="icon"><use href="#i-clock"/></svg>${escapeHTML(friendlyTime(task.reminder))}</span>` : ''}</div>
+          </div>
+          <div class="task-actions"><button type="button" class="icon-btn edit-task" data-action="edit" aria-label="Edit ${escapeHTML(task.title)}" title="Edit task"><svg class="icon"><use href="#i-pencil"/></svg></button><button type="button" class="icon-btn delete-task" data-action="delete" aria-label="Delete ${escapeHTML(task.title)}" title="Delete task"><svg class="icon"><use href="#i-trash"/></svg></button></div>
+        </article>`;
+      }
+      function render() {
+        const active = tasks.filter(task => !task.completed);
+        const high = active.filter(task => task.priority === 'High');
+        const overdue = active.filter(task => dayDiff(task.due) < 0);
+        const upcoming = [...active].sort((a,b) => a.due.localeCompare(b.due) || priorities[a.priority]-priorities[b.priority]);
+        $('#openCount').innerHTML = `${active.length} <span>${active.length === 1 ? 'task':'tasks'}</span>`;
+        $('#openCaption').textContent = overdue.length ? `${overdue.length} overdue ${overdue.length === 1 ? 'deadline needs':'deadlines need'} attention` : `You're keeping things on track.`;
+        $('#priorityCount').innerHTML = `${high.length} <span>${high.length === 1 ? 'task':'tasks'}</span>`;
+        $('#priorityCaption').textContent = high.length ? 'These deserve your attention first.' : 'Nothing urgent right now.';
+        $('#nextDeadline').textContent = upcoming.length ? (dayDiff(upcoming[0].due) < 0 ? 'Overdue' : dayDiff(upcoming[0].due) === 0 ? 'Today' : dayDiff(upcoming[0].due) === 1 ? 'Tomorrow' : `${dayDiff(upcoming[0].due)} days`) : 'All clear';
+        $('#deadlineCaption').textContent = upcoming.length ? upcoming[0].title : 'No upcoming deadlines.';
+        $('#taskCountPill').textContent = tasks.length;
+        const visible = filteredTasks();
+        $('#taskList').innerHTML = visible.map(taskMarkup).join('');
+        $('#emptyState').hidden = visible.length !== 0;
+        const messages = {all:['No tasks yet','Add a task to start organizing your week.'], today:['All clear today','You have no open tasks due today.'], upcoming:['No upcoming tasks','You have no future tasks waiting.'], completed:['No completed tasks','Finish a task and it will appear here.']};
+        $('#emptyHeading').textContent = search ? 'No matching tasks' : messages[filter][0];
+        $('#emptyMessage').textContent = search ? 'Try a different search term.' : messages[filter][1];
+        $('#emptyAddTask').hidden = !!search;
+        $('#clearCompleted').hidden = !tasks.some(task => task.completed);
+        $$('.tab').forEach(tab => { const selected = tab.dataset.filter === filter; tab.classList.toggle('active', selected); tab.setAttribute('aria-pressed', String(selected)); });
+        const done = tasks.filter(task => task.completed).length;
+        const percent = tasks.length ? Math.round(done / tasks.length * 100) : 0;
+        $('#progressRing').style.setProperty('--progress', `${percent}%`);
+        $('#progressRing').setAttribute('aria-label', `${percent} percent complete`);
+        $('#progressValue').textContent = `${percent}%`;
+        $('#progressDone').textContent = `${done} completed`;
+        $('#progressTotal').textContent = `${tasks.length} total`;
+        $('#progressHeadline').textContent = percent === 100 && tasks.length ? 'You did it!' : percent >= 50 ? 'Great momentum!' : 'Keep moving';
+        $('#progressCaption').textContent = percent === 100 && tasks.length ? 'Everything is checked off.' : 'Every finished task is a win.';
+        const queue = [...active].sort((a,b) => priorities[a.priority]-priorities[b.priority] || a.due.localeCompare(b.due)).slice(0,3);
+        $('#priorityList').innerHTML = queue.length ? queue.map((task,index) => `<button type="button" class="priority-item" data-jump-id="${escapeHTML(task.id)}"><span class="priority-rank ${index === 0 ? 'top-rank':''}">${index+1}</span><span class="priority-details"><strong>${escapeHTML(task.title)}</strong><small>${escapeHTML(task.priority)} · ${escapeHTML(dateLabel(task.due))}</small></span><svg class="icon arrow-icon"><use href="#i-arrow"/></svg></button>`).join('') : '<p class="side-empty">No open tasks in your priority queue.</p>';
+        const ranges = [
+          ['Overdue',active.filter(t => dayDiff(t.due)<0).length,'red'],
+          ['Today',active.filter(t => dayDiff(t.due)===0).length,'orange'],
+          ['Tomorrow',active.filter(t => dayDiff(t.due)===1).length,'blue'],
+          ['Next 7 days',active.filter(t => dayDiff(t.due)>=2 && dayDiff(t.due)<=7).length,'purple']
+        ];
+        $('#dueList').innerHTML = ranges.map(([label,count,color]) => `<div class="due-row"><span><i class="due-dot due-${color}"></i>${label}</span><strong>${count} ${count === 1 ? 'task':'tasks'}</strong></div>`).join('');
+      }
+      function setFilter(nextFilter) { filter = nextFilter; render(); }
+      function openTaskDialog(task = null) {
+        editingId = task ? task.id : null;
+        $('#dialogTitle').textContent = task ? 'Edit task' : 'Add a task';
+        $('#saveTaskButton').innerHTML = `<svg class="icon"><use href="#i-check"/></svg>${task ? 'Save changes' : 'Save task'}`;
+        $('#taskForm').reset();
+        $('#taskTitle').value = task?.title || '';
+        $('#taskDescription').value = task?.description || '';
+        $('#taskCategory').value = task?.category || 'Homework';
+        $('#taskPriority').value = task?.priority || 'Medium';
+        $('#taskDue').value = task?.due || dateOffset(1);
+        $('#taskReminder').value = task?.reminder || '';
+        $('#taskDialog').showModal();
+        $('#taskTitle').focus();
+      }
+      function closeTaskDialog() { $('#taskDialog').close(); }
+      $('#openAddTask').addEventListener('click', () => openTaskDialog());
+      $('#addTaskInline').addEventListener('click', () => openTaskDialog());
+      $('#emptyAddTask').addEventListener('click', () => openTaskDialog());
+      $('#closeDialog').addEventListener('click', closeTaskDialog);
+      $('#cancelDialog').addEventListener('click', closeTaskDialog);
+      $('#taskDialog').addEventListener('click', event => { if (event.target === $('#taskDialog')) closeTaskDialog(); });
+      $('#taskForm').addEventListener('submit', event => {
+        event.preventDefault();
+        const title = $('#taskTitle').value.trim();
+        const due = $('#taskDue').value;
+        if (!title || !validDate(due)) return;
+        const details = {title, description:$('#taskDescription').value.trim(), category:$('#taskCategory').value, priority:$('#taskPriority').value, due, reminder:$('#taskReminder').value};
+        const current = editingId ? tasks.find(task => task.id === editingId) : null;
+        if (current) Object.assign(current, details);
+        else tasks.unshift({id:makeId(), ...details, completed:false, createdAt:Date.now()});
+        closeTaskDialog();
+        setFilter('all');
+        search = ''; $('#searchInput').value = '';
+        persist();
+        showToast(current ? 'Task updated.' : 'Task added to your planner.');
+      });
+      $('#taskList').addEventListener('change', event => {
+        const checkbox = event.target.closest('.task-check');
+        if (!checkbox) return;
+        const task = tasks.find(item => item.id === checkbox.closest('[data-id]').dataset.id);
+        if (!task) return;
+        task.completed = checkbox.checked;
+        persist(); showToast(task.completed ? 'Nice work! Task completed.' : 'Task moved back to your list.');
+      });
+      $('#taskList').addEventListener('click', event => {
+        const button = event.target.closest('[data-action]');
+        if (!button) return;
+        const id = button.closest('[data-id]').dataset.id;
+        const task = tasks.find(item => item.id === id);
+        if (!task) return;
+        if (button.dataset.action === 'edit') openTaskDialog(task);
+        if (button.dataset.action === 'delete' && window.confirm(`Delete "${task.title}"?`)) {
+          tasks = tasks.filter(item => item.id !== id); persist(); showToast('Task deleted.');
+        }
+      });
+      $('#quickAddForm').addEventListener('submit', event => {
+        event.preventDefault();
+        const title = $('#quickTitle').value.trim();
+        if (!title) return;
+        tasks.unshift({id:makeId(), title, description:'', category:'Personal', priority:'Medium', due:dateOffset(0), reminder:'', completed:false, createdAt:Date.now()});
+        $('#quickTitle').value = '';
+        search = ''; $('#searchInput').value = '';
+        setFilter('all'); persist(); showToast('Quick task added for today.');
+      });
+      $$('.tab').forEach(tab => tab.addEventListener('click', () => setFilter(tab.dataset.filter)));
+      $('#todayButton').addEventListener('click', () => { search=''; $('#searchInput').value=''; setFilter('today'); $('#tasksHeading').scrollIntoView({behavior:'smooth',block:'start'}); });
+      $('#searchInput').addEventListener('input', event => { search=event.target.value; render(); });
+      $('#sortSelect').addEventListener('change', event => { sort=event.target.value; render(); });
+      $('#priorityList').addEventListener('click', event => {
+        const item = event.target.closest('[data-jump-id]'); if (!item) return;
+        setFilter('all'); search=''; $('#searchInput').value=''; render();
+        const card = $$('.task-card').find(element => element.dataset.id === item.dataset.jumpId);
+        if (card) { card.scrollIntoView({behavior:'smooth',block:'center'}); card.classList.add('highlight'); setTimeout(() => card.classList.remove('highlight'), 1600); }
+      });
+      $('#clearCompleted').addEventListener('click', () => {
+        const count = tasks.filter(task => task.completed).length;
+        if (!count || !window.confirm(`Permanently delete ${count} completed ${count === 1 ? 'task':'tasks'}?`)) return;
+        tasks = tasks.filter(task => !task.completed); persist(); showToast('Completed tasks cleared.');
+      });
+      $('#todayText').textContent = new Date().toLocaleDateString(undefined, {month:'short', day:'numeric'});
+      render();
+    })();
+  </script>
+</body>
+</html>
