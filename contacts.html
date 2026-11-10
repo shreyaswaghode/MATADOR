@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-contacts">
+
+  <!-- Navigation bar (same on every page) -->
+  <header>
+    <nav class="navbar">
+        <h1 class="logo"><a href="#">MATADOR</a></h1>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="reminders.html">Reminders</a></li>
+            <li><a href="planner.html">Planner</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="contacts.html">Contacts</a></li>
+        </ul>
+    </nav>
+  </header>
+
+  <main class="contacts-layout">
+
+    <!-- Left side: contact list -->
+    <section class="contacts-section" aria-labelledby="contacts-heading">
+      <div class="contacts-header">
+        <button class="menu-button" type="button" aria-label="Open contacts menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <h1 id="contacts-heading">Contacts</h1>
+      </div>
+
+      <ul class="contact-list">
+        <li class="contact">
+          <img src="images/avatar.svg" alt="Profile picture for Dr. Maaz Amjad" class="avatar">
+          <div class="contact-info">
+            <p class="contact-name">Dr. Maaz Amjad</p>
+            <a href="mailto:maaz.amjad@ttu.edu" class="contact-email">maaz.amjad@ttu.edu</a>
+          </div>
+        </li>
+        <li class="contact">
+          <img src="images/avatar.svg" alt="Profile picture for Jessica Woodard" class="avatar">
+          <div class="contact-info">
+            <p class="contact-name">Jessica Woodard</p>
+            <a href="mailto:Jessica.Woodard@ttu.edu" class="contact-email">Jessica.Woodard@ttu.edu</a>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Right side: compose box -->
+    <section class="compose-section" aria-labelledby="compose-heading">
+      <h2 id="compose-heading">Compose</h2>
+      <form class="compose-box" action="#">
+        <label for="message" class="visually-hidden">Message</label>
+        <textarea id="message" name="message" placeholder="Write your message..."></textarea>
+        <button type="submit" class="send-button" aria-label="Send message">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path d="M22 2 11 13"/>
+            <path d="M22 2 15 22 11 13 2 9 22 2z"/>
+          </svg>
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Footer (same on every page) -->
+  <footer>
+        <p>© 2026 MATADOR</p>
+    </footer>
+
+</body>
+</html>
