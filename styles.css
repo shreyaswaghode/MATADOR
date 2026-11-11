@@ -13,61 +13,11 @@ body{
     background:white;
 }
 
-/* NAVBAR */
-
-.navbar{
-    background:black;
-    height:80px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:0 50px;
-}
-
-/* LOGO */
-
-.logo a{
-    color:red;
-    text-decoration:none;
-    font-size:36px;
-    font-weight:bold;
-}
-
-/* NAVIGATION LINKS */
-
-.nav-links{
-    list-style:none;
-    display:flex;
-
-    width:65%;
-
-    justify-content:space-evenly;
-}
-
-.nav-links a{
-    text-decoration:none;
-
-    background:red;
-    color:black;
-
-    padding:10px 20px;
-
-    border-radius:25px;
-
-    font-weight:bold;
-}
-
-.nav-links a:hover{
-    background:rgb(255,80,80);
-}
-
 /* MAIN SECTION */
 
 .main-layout{
     display:flex;
-    height:calc(100vh - 120px);
+    min-height:calc(100vh - 120px);
 }
 
 /* EVENTS COLUMN */
@@ -118,21 +68,22 @@ body{
     object-fit:cover;
 }
 
-/* FOOTER */
-
-footer{
-    background:black;
-
-    color:white;
-
-    height:40px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
 /* CONTACTS PAGE */
+
+@media (max-width: 760px) {
+    .main-layout {
+        flex-direction: column;
+    }
+
+    .events-panel,
+    .map-panel {
+        width: 100%;
+    }
+
+    .map-panel img {
+        max-height: 55vh;
+    }
+}
 
 .page-contacts {
   margin: 0;
